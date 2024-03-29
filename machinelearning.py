@@ -7,19 +7,19 @@ from sklearn.neighbors import KNeighborsClassifier
 from sklearn.linear_model import LogisticRegression
 from sklearn.preprocessing import MinMaxScaler
 
-data = pd.read_csv("data-1711189329586.csv")
+data = pd.read_csv("data.csv")
 
 filtered_data = data[data['mip'].between(10,100)]
 # print(filtered_data)
 
-print(filtered_data.mean(), filtered_data.max(), filtered_data.min())
+# print(filtered_data.mean(), filtered_data.max(), filtered_data.min())
 
 filtered_data = filtered_data.sort_values(by="sip", ascending = True)
 #Exersize1
 X_train, X_test, y_train, y_test = train_test_split(filtered_data.drop('target', axis=1),filtered_data['target'],test_size=0.2 ,random_state=33, stratify=filtered_data['target'], )
 
 #Exersize2
-scaler = StandardScaler()
+scaler = MinMaxScaler()
 X_train_scaled = scaler.fit_transform(X_train)
 X_test_scaled = scaler.transform(X_test)
 data_scaled = pd.DataFrame(X_train_scaled, columns = X_train.columns)
