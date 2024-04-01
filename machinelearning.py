@@ -10,8 +10,8 @@ from sklearn.preprocessing import MinMaxScaler
 data = pd.read_csv("data-1711189329586.csv")
 filtered_data = data[((data['target']==0)& data['mip'].between(10,100)) | ((data['target']==1)& data['mip'].between(10,100))]
 print(filtered_data)
-df = pd.DataFrame(filtered_data)
-df.to_csv("Ready.csv", index = False)
+# df = pd.DataFrame(filtered_data)
+# df.to_csv("Ready.csv", index = False)
 # filtered_data = data[data['mip'].between(10,100)] and data
 # filtered_data = filtered_data[filtered_data['target']==0]
 # filtered_data = filtered_data.sort_values(by="mip")
@@ -24,29 +24,27 @@ df.to_csv("Ready.csv", index = False)
 
 
 
-# print(filtered_data.mean(), filtered_data.max(), filtered_data.min())
+print(filtered_data.mean(), filtered_data.max(), filtered_data.min())
 
-# filtered_data = filtered_data.sort_values(by="sip", ascending = True)
+filtered_data = filtered_data.sort_values(by="sip", ascending = True)
 # Exersize1
-# X_train, X_test, y_train, y_test = train_test_split(filtered_data.drop('target', axis=1),filtered_data['target'],test_size=0.2 ,random_state=33, stratify=filtered_data['target'], )
+ X_train, X_test, y_train, y_test = train_test_split(filtered_data.drop('target', axis=1),filtered_data['target'],test_size=0.2 ,random_state=33, stratify=filtered_data['target'], )
 #
 # Exersize2
-# scaler = MinMaxScaler()
-# X_train_scaled = scaler.fit_transform(X_train)
-# X_test_scaled = scaler.transform(X_test)
-# data_scaled = pd.DataFrame(X_train_scaled, columns = X_train.columns)
-#
-# print(f"Максимальное значение STDC из тренировочной выборки: {X_train['stdc'].max():.3f}")
-# print(f"Выборочное среднее для столбца STDIP из тренировочной выборки (после нормировки): {data_scaled['stdip'].mean():.3f}")
-#
+scaler = MinMaxScaler()
+X_train_scaled = scaler.fit_transform(X_train)
+X_test_scaled = scaler.transform(X_test)
+data_scaled = pd.DataFrame(X_train_scaled, columns = X_train.columns)
+print(f"Максимальное значение STDC из тренировочной выборки: {X_train['stdc'].max():.3f}")
+print(f"Выборочное среднее для столбца STDIP из тренировочной выборки (после нормировки): {data_scaled['stdip'].mean():.3f}")
+
 # Exersize4(логистическая регрессия)
-# clf = LogisticRegression().fit(X_train_scaled, y_train)
-# pred = clf.predict(X_test_scaled)
-# print("первая матрица: ", confusion_matrix(pred, y_test))
-#
+clf = LogisticRegression().fit(X_train_scaled, y_train)
+pred = clf.predict(X_test_scaled)
+print("первая матрица: ", confusion_matrix(pred, y_test))
 # Exersize5 - метод ближайших соседей
-# knn = KNeighborsClassifier(n_neighbors=3)
-# knn.fit(X_train_scaled, y_train)
-# pred = knn.predict(X_test_scaled)
-# print("вторая матрица: ", confusion_matrix(pred, y_test))
-# print(f1_score(pred, y_test))
+knn = KNeighborsClassifier(n_neighbors=3)
+knn.fit(X_train_scaled, y_train)
+pred = knn.predict(X_test_scaled)
+print("вторая матрица: ", confusion_matrix(pred, y_test))
+print(f1_score(pred, y_test))
